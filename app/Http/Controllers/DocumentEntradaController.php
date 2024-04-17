@@ -45,8 +45,6 @@ class DocumentEntradaController extends Controller
 
         $validacio = Validator::make($request->all(), $reglesValidacioInput, $missatges);
         if (!$validacio->fails()) {
-            $psw = Hash::make($request->contrasenya);
-            $request->merge(["contrasenya" => $psw]);
             $tupla = DocumentEntrada::create($request->all());
             return response()->json(['result' => $tupla], 200);
         } else {
