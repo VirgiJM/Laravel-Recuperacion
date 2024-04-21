@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rol extends Model
 {
     use HasFactory;
+    protected $table = "rol";
     protected $fillable = ['id', 'nom'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

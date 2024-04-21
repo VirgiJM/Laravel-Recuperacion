@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Aula extends Model
 {
     use HasFactory;
+    protected $table = "aula";
     protected $fillable = ['id', 'idEdifici', 'idPis'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     return $request->user();
 });
-$router->group(['prefix' => 'usuaris'], function () use ($router) {
+$router->group(['prefix' => 'usuari'], function () use ($router) {
     $router->get('', [UsuariController::class, 'index']);
     $router->get('{id}', [UsuariController::class, 'show']);
     $router->post('', [UsuariController::class, 'store']);

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Usuari extends Model
 {
     use HasFactory;
-
+    protected $table = "usuari";
     protected $fillable = ['id', 'nom', 'email', 'contrasenya', 'idRol', 'telefon'];
     protected $hidden = ['created_at', 'validat', 'updated_at', 'remember_token'];
 }
