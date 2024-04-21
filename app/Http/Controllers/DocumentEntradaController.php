@@ -31,7 +31,7 @@ class DocumentEntradaController extends Controller
             'pdf' => ['required', 'boolean'], // Es boolean
             'url_pdf' => ['required', 'max:75'],
             'idProveidor' => ['required']
-             
+
             // 'validat' => ['nullable'],
             // 'idRol' => ['max:9']
         ];
@@ -67,11 +67,51 @@ class DocumentEntradaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'data' => ['required', 'filled'],
+            'observacions' => ['max:250'],
+            'ref' => ['required'],
+            'pdf' => ['required', 'boolean'], // Es boolean
+            'url_pdf' => ['required', 'max:75'],
+            'idProveidor' => ['required']
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute massa llarg',
+            'boolean' => ':attribute ha de ser booleà'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $documentEntrada = DocumentEntrada::findOrFail($id);
+            $documentEntrada->update($request->all());
+            return response()->json(['resultat' => $documentEntrada], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Document d\'entrada no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $documentEntrada = DocumentEntrada::findOrFail($id);
+            $documentEntrada->delete();
+            return response()->json(['missatge' => 'Document d\'entrada eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Document d\'entrada no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

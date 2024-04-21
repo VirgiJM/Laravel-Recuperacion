@@ -65,11 +65,47 @@ class ProveeidorController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'nom' => ['filled', 'max:50', 'unique:Proveeidor,nom,' . $id],
+            'nif' => ['filled', 'max:20', 'unique:Proveeidor,nif,' . $id],
+            'email' => ['email', 'unique:Proveeidor,email,' . $id],
+            'telefon' => ['filled', 'max:25', 'unique:Proveeidor,telefon,' . $id],
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute és massa llarg',
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $proveidor = Proveeidor::findOrFail($id);
+            $proveidor->update($request->all());
+            return response()->json(['resultat' => $proveidor], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Proveïdor no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $proveidor = Proveeidor::findOrFail($id);
+            $proveidor->delete();
+            return response()->json(['missatge' => 'Proveïdor eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Proveïdor no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

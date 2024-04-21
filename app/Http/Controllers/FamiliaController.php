@@ -59,11 +59,45 @@ class FamiliaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'nom' => ['required', 'filled', 'max:50', 'unique:familia,nom,' . $id],
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute massa llarg'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $familia = Familia::findOrFail($id);
+            $familia->update($request->all());
+            return response()->json(['resultat' => $familia], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Família no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $familia = Familia::findOrFail($id);
+            $familia->delete();
+            return response()->json(['missatge' => 'Família eliminada correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Família no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

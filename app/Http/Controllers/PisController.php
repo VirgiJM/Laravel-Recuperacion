@@ -58,11 +58,43 @@ class PisController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'idEdifici' => ['required', 'unique:pis,idEdifici,' . $id],
+        ];
+
+        $missatges = [
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $pis = Pis::findOrFail($id);
+            $pis->update($request->all());
+            return response()->json(['resultat' => $pis], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Pis no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $pis = Pis::findOrFail($id);
+            $pis->delete();
+            return response()->json(['missatge' => 'Pis eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Pis no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

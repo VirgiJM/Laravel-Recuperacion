@@ -62,11 +62,44 @@ class RolController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'nom' => ['required', 'filled', 'max:50'],
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'max' => ':attribute massa llarg'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $rol = Rol::findOrFail($id);
+            $rol->update($request->all());
+            return response()->json(['resultat' => $rol], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Rol no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $rol = Rol::findOrFail($id);
+            $rol->delete();
+            return response()->json(['missatge' => 'Rol eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Rol no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

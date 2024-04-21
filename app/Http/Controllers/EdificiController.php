@@ -59,11 +59,42 @@ class EdificiController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'descripcio' => ['max:50']
+        ];
+
+        $missatges = [
+            'max' => ':attribute massa llarg'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $edifici = Edifici::findOrFail($id);
+            $edifici->update($request->all());
+            return response()->json(['resultat' => $edifici], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Edifici no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $edifici = Edifici::findOrFail($id);
+            $edifici->delete();
+            return response()->json(['missatge' => 'Edifici eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Edifici no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

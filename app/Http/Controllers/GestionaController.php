@@ -62,11 +62,44 @@ class GestionaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'idAula' => ['filled', 'unique:gestiona,idAula,' . $id],
+            'idUsuari' => ['filled', 'unique:gestiona,idUsuari,' . $id]
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'unique' => ':attribute ja està en ús'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $gestiona = Gestiona::findOrFail($id);
+            $gestiona->update($request->all());
+            return response()->json(['resultat' => $gestiona], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Gestió no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $gestiona = Gestiona::findOrFail($id);
+            $gestiona->delete();
+            return response()->json(['missatge' => 'Gestió eliminada correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Gestió no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

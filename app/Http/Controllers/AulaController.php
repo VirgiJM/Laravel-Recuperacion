@@ -62,11 +62,47 @@ class AulaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'idEdifici' => ['required'],
+            'idPis' => ['required'],
+            'idAula' => ['required'],
+            'descripcio' => ['max:50'],
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute massa llarg'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $aula = Aula::findOrFail($id);
+            $aula->update($request->all());
+            return response()->json(['resultat' => $aula], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Aula no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $aula = Aula::findOrFail($id);
+            $aula->delete();
+            return response()->json(['missatge' => 'Aula eliminada correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Aula no trobada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

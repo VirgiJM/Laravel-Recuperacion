@@ -66,11 +66,53 @@ class ArticleController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'dataalta' => ['required', 'filled', 'date'],
+            'marca' => ['required', 'max:75', 'unique:Article,marca,' . $id],
+            'model' => ['required', 'max:75', 'unique:Article,model,' . $id],
+            'descripcio' => ['required', 'max:150'],
+            'databaixa' => ['nullable', 'date'],
+            'idFamilia' => ['filled'],
+            'idAula' => ['filled'],
+            'idDocumentEntrada' => ['filled']
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute és massa llarg',
+            'date' => ':attribute no és una data vàlida'
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $article = Article::findOrFail($id);
+            $article->update($request->all());
+            return response()->json(['resultat' => $article], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Article no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $article = Article::findOrFail($id);
+            $article->delete();
+            return response()->json(['missatge' => 'Article eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Article no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

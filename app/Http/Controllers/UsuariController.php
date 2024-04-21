@@ -66,11 +66,48 @@ class UsuariController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $reglesValidacio = [
+            'nom' => ['required', 'filled', 'max:50'],
+            'email' => ['required', 'unique:usuari,email,' . $id],
+            'contrasenya' => ['required'],
+            'telefon' => ['max:12'],
+        ];
+
+        $missatges = [
+            'filled' => ':attribute no pot estar buit',
+            'required' => 'Atribut :attribute requerit',
+            'unique' => ':attribute ja està en ús',
+            'max' => ':attribute massa llarg',
+        ];
+
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+
+        if ($validacio->fails()) {
+            return response()->json(['error' => $validacio->errors()], 400);
+        }
+
+        try {
+            $usuari = Usuari::findOrFail($id);
+            $usuari->update($request->all());
+            return response()->json(['resultat' => $usuari], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Usuari no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
+
 
     public function destroy(string $id)
     {
-        //
+        try {
+            $usuari = Usuari::findOrFail($id);
+            $usuari->delete();
+            return response()->json(['missatge' => 'Usuari eliminat correctament'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Usuari no trobat'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }
