@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('pis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idEdifici'); // Agregamos la columna para la clave foránea
+            $table->unsignedBigInteger('edificiId'); // Agregamos la columna para la clave foránea
+            $table->integer("numPis");
+            $table->unique(["edificiId", "numPis"]);
             $table->timestamps();
 
             // Definimos la clave foránea
-            $table->foreign('idEdifici')->references('id')->on('edifici');
+            $table->foreign('edificiId')->references('id')->on('edifici');
         });
     }
 
@@ -27,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pis', function (Blueprint $table) {
-            $table->dropForeign(['idEdifici']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['edificiId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::dropIfExists('pis');
     }

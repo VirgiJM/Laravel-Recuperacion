@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nif', 20)->unique();
             $table->string('email',50)->unique();
             $table->string('telefon',25)->unique();
+            $table->date('baixa')->nullable();
             $table->timestamps();
         });
     }

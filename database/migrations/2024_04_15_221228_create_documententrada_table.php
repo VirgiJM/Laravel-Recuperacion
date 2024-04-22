@@ -16,11 +16,10 @@ return new class extends Migration
             $table->date("data");
             $table->string("observacions",250);
             $table->unsignedBigInteger("ref")->unique();
-            $table->boolean("pdf");
             $table->string("url_pdf",75)->unique();
-            $table->unsignedBigInteger("idProveidor");
+            $table->unsignedBigInteger("proveeidorId");
             
-            $table->foreign("idProveidor")->references("id")->on("proveeidor");
+            $table->foreign("proveeidorId")->references("id")->on("proveeidor");
             $table->timestamps();
         });
     }
@@ -31,7 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('documententrada', function (Blueprint $table) {
-            $table->dropForeign(['idProveidor']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['proveeidorId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::dropIfExists('documententrada');
     }

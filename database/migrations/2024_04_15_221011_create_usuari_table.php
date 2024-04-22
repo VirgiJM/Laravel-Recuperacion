@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('contrasenya', 100);
             $table->timestamp('validat')->nullable();
             $table->string('telefon', 25)->unique();
-            $table->unsignedBigInteger("idRol");
-            $table->foreign('idRol')->references('id')->on('rol');
+            $table->unsignedBigInteger("rolId");
+            $table->date("baixa")->nullable();
+            $table->foreign('rolId')->references('id')->on('rol');
             $table->timestamps();
         });
     }
@@ -30,7 +31,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('usuari', function (Blueprint $table) {
-            $table->dropForeign(['idRol']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['rolId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::dropIfExists('usuari');
     }

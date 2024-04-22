@@ -20,13 +20,13 @@ return new class extends Migration
             $table->string("model",75);
             $table->string("descripcio",150);
             $table->date("databaixa")->nullable();
-            $table->unsignedBigInteger("idFamilia");
-            $table->unsignedBigInteger("idAula");
-            $table->unsignedBigInteger("idDocumentEntrada");
+            $table->unsignedBigInteger("familiaId");
+            $table->unsignedBigInteger("aulaId");
+            $table->unsignedBigInteger("documentEntradaId");
 
-            $table->foreign("idFamilia")->references("id")->on("familia");
-            $table->foreign("idAula")->references("id")->on("aula");
-            $table->foreign("idDocumentEntrada")->references("id")->on("documententrada");
+            $table->foreign("familiaId")->references("id")->on("familia");
+            $table->foreign("aulaId")->references("id")->on("aula");
+            $table->foreign("documentEntradaId")->references("id")->on("documententrada");
             $table->timestamps();
         });
     }
@@ -37,13 +37,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('article', function (Blueprint $table) {
-            $table->dropForeign(['idFamilia']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['familiaId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::table('article', function (Blueprint $table) {
-            $table->dropForeign(['idAula']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['aulaId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::table('article', function (Blueprint $table) {
-            $table->dropForeign(['idDocumentEntrada']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['documentEntradaId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::dropIfExists('article');
     }

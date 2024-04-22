@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('aula', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("idEdifici");
-            $table->unsignedBigInteger("idPis");
-            $table->unsignedBigInteger('idAula');
-            $table->string("descripcio",50);
+            $table->unsignedBigInteger("pisId");
+            $table->unsignedBigInteger('codiAula');
+            $table->string("descripcio", 50);
             $table->timestamps();
-            $table->unique(['idEdifici', 'idPis', 'idAula']);
-            $table->foreign("idEdifici")->references("id")->on("edifici");
-            $table->foreign("idPis")->references("id")->on("pis");
+            $table->unique(['pisId', 'codiAula']);
+            $table->foreign("pisId")->references("id")->on("pis");
         });
     }
 
@@ -30,10 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('aula', function (Blueprint $table) {
-            $table->dropForeign(['idEdifici']); // Eliminamos la clave foránea antes de eliminar la tabla
-        });
-        Schema::table('aula', function (Blueprint $table) {
-            $table->dropForeign(['idPis']); // Eliminamos la clave foránea antes de eliminar la tabla
+            $table->dropForeign(['pisId']); // Eliminamos la clave foránea antes de eliminar la tabla
         });
         Schema::dropIfExists('aula');
     }
