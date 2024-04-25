@@ -9,6 +9,6 @@ class Pis extends Model
 {
     use HasFactory;
     protected $table = "pis";
-    protected $fillable = ['id', 'idEdifici'];
+    protected $fillable = ['id', 'edificiId', 'numPis'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

@@ -25,7 +25,7 @@ class PisController extends Controller
     public function store(Request $request)
     {
         $reglesValidacioInput = [
-            'idEdifici' => ['required', 'unique:pis,idEdifici'],
+            'edificiId' => ['required', 'unique:pis,edificiId'],
 
         ];
 
@@ -59,7 +59,7 @@ class PisController extends Controller
     public function update(Request $request, string $id)
     {
         $reglesValidacio = [
-            'idEdifici' => ['required', 'unique:pis,idEdifici,' . $id],
+            'edificiId' => ['required', 'unique:pis,edificiId,' . $id],
         ];
 
         $missatges = [
