@@ -32,9 +32,7 @@ class AulaController extends Controller
         ];
 
         $missatges = [
-            'filled' => ':attribute no pot estar buit',
             'required' => 'Atribut :attribute requerit',
-            'unique' => ':attribute repetit',
             'max' => ':attribute massa llarg'
         ];
 
@@ -70,9 +68,7 @@ class AulaController extends Controller
         ];
 
         $missatges = [
-            'filled' => ':attribute no pot estar buit',
             'required' => 'Atribut :attribute requerit',
-            'unique' => ':attribute ja està en ús',
             'max' => ':attribute massa llarg'
         ];
 

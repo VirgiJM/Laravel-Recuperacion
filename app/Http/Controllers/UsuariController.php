@@ -28,7 +28,7 @@ class UsuariController extends Controller
             'nom' => ['required', 'filled', 'max:50'],
             'email' => ['required', 'unique:usuari,email'],
             'contrasenya' => ['required'],
-            'telefon' => ['max:12'],
+            'telefon' => ['max:20'],
             // 'validat' => ['nullable'],
             // 'idRol' => ['max:9']
         ];
@@ -43,9 +43,18 @@ class UsuariController extends Controller
         $validacio = Validator::make($request->all(), $reglesValidacioInput, $missatges);
         if (!$validacio->fails()) {
             $psw = Hash::make($request->contrasenya);
-            $request->merge(["contrasenya" => $psw]);
-            $tupla = Usuari::create($request->all());
-            return response()->json(['result' => $tupla], 200);
+            // $request->merge(["contrasenya" => $psw]);
+            // $request->merge(["rolId" => 1]); // Para asignar el rol cuyo id sea 1.
+            // $tupla = Usuari::create($request->all());
+            // return response()->json(['result' => $tupla], 200);
+            $usuari = new Usuari();
+            $usuari-> nom = $request->nom;
+            $usuari-> email = $request->email;
+            $usuari-> contrasenya = $psw;
+            $usuari-> telefon = $request->telefon;
+            $usuari-> rolId = 1;
+            $usuari-> save();
+            return response()->json(['result' => $usuari], 200);
         } else {
             return response()->json(['error' => $validacio->errors()], 400); // Bad Request
         }
