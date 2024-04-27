@@ -9,6 +9,6 @@ class Aula extends Model
 {
     use HasFactory;
     protected $table = "aula";
-    protected $fillable = ['id', 'idEdifici', 'idPis'];
+    protected $fillable = ['id', 'codiAula'/*'idEdifici'*/, 'pisId', 'descripcio'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

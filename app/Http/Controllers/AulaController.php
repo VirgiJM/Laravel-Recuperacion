@@ -25,10 +25,14 @@ class AulaController extends Controller
     public function store(Request $request)
     {
         $reglesValidacioInput = [
-            'idEdifici' => ['required'],
-            'idPis' => ['required'],
-            'idAula' => ['required'],
-            'descripcio' => ['max:50'],
+            // 'idEdifici' => ['required'],
+            // 'idPis' => ['required'],
+            // 'idAula' => ['required'],
+            // 'descripcio' => ['max:50'],
+            'pisId' => ['required'],
+            'codiAula' => ['required'],
+            'descripcio' => ['max:150']
+
         ];
 
         $missatges = [
@@ -61,10 +65,13 @@ class AulaController extends Controller
     public function update(Request $request, string $id)
     {
         $reglesValidacio = [
-            'idEdifici' => ['required'],
+            /*'idEdifici' => ['required'],
             'idPis' => ['required'],
             'idAula' => ['required'],
-            'descripcio' => ['max:50'],
+            'descripcio' => ['max:50'],*/
+            'pisId' => ['required'],
+            'codiAula' => ['required'],
+            'descripcio' => ['max:150']
         ];
 
         $missatges = [

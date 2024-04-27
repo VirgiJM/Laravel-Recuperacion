@@ -25,13 +25,13 @@ class PisController extends Controller
     public function store(Request $request)
     {
         $reglesValidacioInput = [
-            'edificiId' => ['required', 'unique:pis,edificiId'],
-
+        'edificiId' => ['required', /*'unique:pis,edificiId'*/],
+        'numPis' => ['required']
         ];
 
         $missatges = [
             'required' => 'Atribut :attribute requerit',
-            'unique' => ':attribute repetit',
+            // 'unique' => ':attribute repetit',
         ];
 
         $validacio = Validator::make($request->all(), $reglesValidacioInput, $missatges);
