@@ -27,13 +27,12 @@ class GestionaController extends Controller
     public function store(Request $request)
     {
         $reglesValidacioInput = [
-            'idAula' => ['filled', 'unique'],
-            'idUsuari' => ['filled', 'unique']
+            'aulaId' => ['filled', 'exists:aula,id'],
+            'usuariId' => ['filled', 'exists:usuari,id']
         ];
 
         $missatges = [
             'filled' => ':attribute no pot estar buit',
-            'unique' => ':attribute repetit'
         ];
 
         $validacio = Validator::make($request->all(), $reglesValidacioInput, $missatges);
@@ -61,8 +60,8 @@ class GestionaController extends Controller
     public function update(Request $request, string $id)
     {
         $reglesValidacio = [
-            'idAula' => ['filled', 'unique:gestiona,idAula,' . $id],
-            'idUsuari' => ['filled', 'unique:gestiona,idUsuari,' . $id]
+            'aulaId' => ['filled', 'exists:aula,aulaId,'],
+            'usuariId' => ['filled', 'exists:usuari,usuariId']
         ];
 
         $missatges = [

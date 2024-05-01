@@ -9,6 +9,6 @@ class Gestiona extends Model
 {
     use HasFactory;
     protected $table = "gestiona";
-    protected $fillable = ['id', 'idAula', 'idUsuari'];
+    protected $fillable = ['id', 'aulaId', 'usuariId'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

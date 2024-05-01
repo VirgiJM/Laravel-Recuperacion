@@ -60,7 +60,7 @@ $router->group(['prefix' => 'aula'], function () use ($router) {
     $router->post('', [AulaController::class, 'store']);
     $router->put('{id}', [AulaController::class, 'update']);
     $router->delete('{id}', [AulaController::class, 'delete']);
-});
+})/*->middleware('checktoken')*/; // Ese Middleware hará que si no tienes token no te dejará mriar esa tabla. Se puede poner en un get, en un post, en un put o en un delete.
 $router->group(['prefix' => 'edifici'], function () use ($router) {
     $router->get('', [EdificiController::class, 'index']);
     $router->get('{id}', [EdificiController::class, 'show']);

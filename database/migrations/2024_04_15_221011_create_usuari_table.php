@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger("rolId");
             $table->date("baixa")->nullable();
             $table->foreign('rolId')->references('id')->on('rol');
+            $table->string('token', 150)->nullable()->unique();
             $table->timestamps();
         });
     }

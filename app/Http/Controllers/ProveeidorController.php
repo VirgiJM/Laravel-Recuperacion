@@ -25,10 +25,12 @@ class ProveeidorController extends Controller
     public function store(Request $request)
     {
         $reglesValidacioInput = [
-            'nom' => ['required', 'filled', 'max:50', 'unique:Proveeidor, nom'],
-            'nif' => ['required', 'filled', 'max:20', 'unique:Proveeidor, nif'],
-            'email' => ['required', 'unique:Proveeidor,email'],
-            'telefon' => ['required', 'filled', 'max:25', 'unique:Proveeidor, telefon'],
+            'nom' => ['required', 'filled', 'max:50', 'unique:proveeidor,nom'],
+            'nif' => ['required', 'filled', 'max:20', 'unique:proveeidor,nif'],
+            'email' => ['required', 'unique:proveeidor,email'],
+            'telefon' => ['required', 'filled', 'max:25', 'unique:proveeidor,telefon'],
+
+
 
             // 'validat' => ['nullable'],
             // 'idRol' => ['max:9']
@@ -66,10 +68,10 @@ class ProveeidorController extends Controller
     public function update(Request $request, string $id)
     {
         $reglesValidacio = [
-            'nom' => ['filled', 'max:50', 'unique:Proveeidor,nom,' . $id],
-            'nif' => ['filled', 'max:20', 'unique:Proveeidor,nif,' . $id],
-            'email' => ['email', 'unique:Proveeidor,email,' . $id],
-            'telefon' => ['filled', 'max:25', 'unique:Proveeidor,telefon,' . $id],
+            'nom' => ['filled', 'max:50', 'unique:proveeidor,nom,' . $id],
+            'nif' => ['filled', 'max:20', 'unique:proveeidor,nif,' . $id],
+            'email' => ['email', 'unique:proveeidor,email,' . $id],
+            'telefon' => ['filled', 'max:25', 'unique:proveeidor,telefon,' . $id],
         ];
 
         $missatges = [
