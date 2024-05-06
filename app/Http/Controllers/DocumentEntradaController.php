@@ -26,11 +26,11 @@ class DocumentEntradaController extends Controller
     {
         $reglesValidacioInput = [
             'data' => ['required', 'filled'],
-            'observacions' => ['max:250'],
+            'observacions' => ['nullable', 'max:250'],
             'ref' => ['required'],
-            'pdf' => ['required', 'boolean'], // Es boolean
+            // 'pdf' => ['required', 'boolean'], // Es boolean
             'url_pdf' => ['required', 'max:75'],
-            'idProveidor' => ['required']
+            'proveeidorId' => ['required', 'exists:proveeidor,id']
 
             // 'validat' => ['nullable'],
             // 'idRol' => ['max:9']

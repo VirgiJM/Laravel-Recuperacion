@@ -9,6 +9,6 @@ class Documententrada extends Model
 {
     use HasFactory;
     protected $table = "documententrada";
-    protected $fillable = ['id', 'data', 'observacions', 'ref', 'pdf', 'url_pdf', 'idProveeidor'];
+    protected $fillable = ['id', 'data', 'observacions', 'ref', 'url_pdf', 'proveeidorId'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }

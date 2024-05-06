@@ -30,9 +30,9 @@ class ArticleController extends Controller
             'model' => ['required', 'unique:Article,model', 'max:75'],
             'descripcio' => ['required', 'max:150'],
             'databaixa' => ['nullable', 'date'],
-            'idFamilia' => ['filled'],
-            'idAula' => ['filled'],
-            'idDocumentEntrada' => ['filled']
+            'familiaId' => ['required', 'filled'],
+            'aulaId' => ['required', 'filled'],
+            'documentEntradaId' => ['required', 'filled']
         ];
 
         $missatges = [
@@ -72,9 +72,9 @@ class ArticleController extends Controller
             'model' => ['required', 'max:75', 'unique:Article,model,' . $id],
             'descripcio' => ['required', 'max:150'],
             'databaixa' => ['nullable', 'date'],
-            'idFamilia' => ['filled'],
-            'idAula' => ['filled'],
-            'idDocumentEntrada' => ['filled']
+            'familiaId' => ['filled'],
+            'aulaId' => ['filled'],
+            'documentEntradaId' => ['filled']
         ];
 
         $missatges = [

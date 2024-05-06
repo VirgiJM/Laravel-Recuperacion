@@ -9,6 +9,6 @@ class Article extends Model
 {
     use HasFactory;
     protected $table = "article";
-    protected $fillable = ['id', 'dataalta', 'marca', 'model', 'descripcio', 'databaixa', 'idFamilia', 'idAula', 'idDocumentEntrada'];
+    protected $fillable = ['id', 'dataalta', 'marca', 'model', 'descripcio', 'databaixa', 'familiaId', 'aulaId', 'documentEntradaId'];
     protected $hidden = ['created_at', 'updated_at', 'remember_token'];
 }
